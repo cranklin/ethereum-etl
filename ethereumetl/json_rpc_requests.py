@@ -57,6 +57,12 @@ def generate_get_code_json_rpc(contract_addresses, block='latest'):
             request_id=idx
         )
 
+def generate_client_version_json_rpc():
+    return generate_json_rpc(
+        method='web3_clientVersion',
+        params=[],
+        request_id=0
+    )
 
 def generate_json_rpc(method, params, request_id=1):
     return {

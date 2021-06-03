@@ -23,7 +23,7 @@
 
 from web3 import HTTPProvider
 #from web3.utils.request import make_post_request
-from ambhttp import make_post_request
+from ethereumetl.providers.ambhttp import make_post_request
 
 
 # Mostly copied from web3.py/providers/rpc.py. Supports batch requests.

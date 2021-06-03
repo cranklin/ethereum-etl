@@ -27,6 +27,7 @@ from web3 import IPCProvider, HTTPProvider
 
 from ethereumetl.providers.ipc import BatchIPCProvider
 from ethereumetl.providers.rpc import BatchHTTPProvider
+from ethereumetl.providers.ambhttp import AMBHTTPProvider
 
 DEFAULT_TIMEOUT = 60
 
@@ -43,7 +44,7 @@ def get_provider_from_uri(uri_string, timeout=DEFAULT_TIMEOUT, batch=False):
         if batch:
             return BatchHTTPProvider(uri_string, request_kwargs=request_kwargs)
         else:
-            return HTTPProvider(uri_string, request_kwargs=request_kwargs)
+            return AMBHTTPProvider(uri_string, request_kwargs=request_kwargs)
     else:
         raise ValueError('Unknown uri scheme {}'.format(uri_string))
 
