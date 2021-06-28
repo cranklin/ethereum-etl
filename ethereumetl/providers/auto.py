@@ -42,7 +42,8 @@ def get_provider_from_uri(uri_string, timeout=DEFAULT_TIMEOUT, batch=False):
     elif uri.scheme == 'http' or uri.scheme == 'https':
         request_kwargs = {'timeout': timeout}
         if batch:
-            return BatchHTTPProvider(uri_string, request_kwargs=request_kwargs)
+            #return BatchHTTPProvider(uri_string, request_kwargs=request_kwargs)
+            return AMBHTTPProvider(uri_string, request_kwargs=request_kwargs)
         else:
             return AMBHTTPProvider(uri_string, request_kwargs=request_kwargs)
     else:

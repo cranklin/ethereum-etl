@@ -113,7 +113,10 @@ def dynamic_batch_iterator(iterable, batch_size_getter):
     for item in iterable:
         batch.append(item)
         if len(batch) >= batch_size:
-            yield batch
+            if batch_size == 1:
+                yield batch[0]
+            else:
+                yield batch
             batch = []
             batch_size = batch_size_getter()
     if len(batch) > 0:
