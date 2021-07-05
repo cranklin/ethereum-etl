@@ -21,10 +21,12 @@
 # SOFTWARE.
 
 
+import boto3
 import contextlib
 import os
 import pathlib
 import sys
+import smart_open as so
 
 
 # https://stackoverflow.com/questions/17602878/how-to-handle-both-with-open-and-sys-stdout-nicely
@@ -43,6 +45,15 @@ def get_file_handle(filename, mode='w', binary=False, create_parent_dirs=True):
         dirname = os.path.dirname(filename)
         pathlib.Path(dirname).mkdir(parents=True, exist_ok=True)
     full_mode = mode + ('b' if binary else '')
+    # S3 handler
+    if filename[:5] == "s3://":
+        session = boto3.Session(
+            aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+            aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+        )
+        fh = so.open(filename, 'wb', transport_params={'client': session.client('s3')})
+        return fh
+
     is_file = filename and filename != '-'
     if is_file:
         fh = open(filename, full_mode)
