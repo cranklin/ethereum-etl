@@ -41,10 +41,6 @@ def smart_open(filename=None, mode='w', binary=False, create_parent_dirs=True):
 
 
 def get_file_handle(filename, mode='w', binary=False, create_parent_dirs=True):
-    if create_parent_dirs and filename is not None:
-        dirname = os.path.dirname(filename)
-        pathlib.Path(dirname).mkdir(parents=True, exist_ok=True)
-    full_mode = mode + ('b' if binary else '')
     # S3 handler
     if filename[:5] == "s3://":
         session = boto3.Session(
@@ -53,6 +49,12 @@ def get_file_handle(filename, mode='w', binary=False, create_parent_dirs=True):
         )
         fh = so.open(filename, 'wb', transport_params={'client': session.client('s3')})
         return fh
+
+    # Traditional file handler
+    if create_parent_dirs and filename is not None:
+        dirname = os.path.dirname(filename)
+        pathlib.Path(dirname).mkdir(parents=True, exist_ok=True)
+    full_mode = mode + ('b' if binary else '')
 
     is_file = filename and filename != '-'
     if is_file:
